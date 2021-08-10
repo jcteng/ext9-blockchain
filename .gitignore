@@ -34,6 +34,8 @@ chia-blockchain.tar.gz.tar.gz
 #*.spec
 build_scripts/*.dmg
 build_scripts/build
+build_scripts_ext9/*.dmg
+build_scripts_ext9/build
 
 
 # Installer logs
