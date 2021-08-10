@@ -1,9 +1,13 @@
 # $env:path should contain a path to editbin.exe and signtool.exe
 
 $ErrorActionPreference = "Stop"
+$StartLocal = Get-Location
 
-mkdir build_scripts\win_build
-Set-Location -Path ".\build_scripts\win_build" -PassThru
+if (Test-Path build_scripts_ext9\win_build) { Remove-Item build_scripts_ext9\win_build -Recurse; }
+if (Test-Path build_scripts_ext9\build) { Remove-Item build_scripts_ext9\build -Recurse; }
+if (Test-Path build_scripts_ext9\dist) { Remove-Item build_scripts_ext9\dist -Recurse; }
+mkdir build_scripts_ext9\win_build
+Set-Location -Path ".\build_scripts_ext9\win_build" -PassThru
 
 git status
 
@@ -14,11 +18,12 @@ Invoke-WebRequest -Uri "https://pypi.chia.net/simple/miniupnpc/miniupnpc-2.2.2-c
 Write-Output "Using win_amd64 python 3.9 wheel from https://github.com/miniupnp/miniupnp/pull/475 (2.2.0-RC1)"
 Write-Output "Actual build from https://github.com/miniupnp/miniupnp/commit/7783ac1545f70e3341da5866069bde88244dd848"
 If ($LastExitCode -gt 0){
+    Set-Location -Path $StartLocal -PassThru
     Throw "Failed to download miniupnpc!"
 }
 else
 {
-    Set-Location -Path - -PassThru
+    Set-Location -Path $StartLocal -PassThru
     Write-Output "miniupnpc download successful."
 }
 
@@ -36,7 +41,7 @@ pip install setuptools_scm
 Write-Output "   ---"
 Write-Output "Get CHIA_INSTALLER_VERSION"
 # The environment variable CHIA_INSTALLER_VERSION needs to be defined
-$env:CHIA_INSTALLER_VERSION = python .\build_scripts\installer-version.py -win
+$env:CHIA_INSTALLER_VERSION = python .\build_scripts_ext9\installer-version.py -win
 
 if (-not (Test-Path env:CHIA_INSTALLER_VERSION)) {
   $env:CHIA_INSTALLER_VERSION = '0.0.0'
@@ -48,14 +53,14 @@ Write-Output "   ---"
 Write-Output "   ---"
 Write-Output "Build chia-blockchain wheels"
 Write-Output "   ---"
-pip wheel --use-pep517 --extra-index-url https://pypi.chia.net/simple/ -f . --wheel-dir=.\build_scripts\win_build .
+pip wheel --use-pep517 --extra-index-url https://pypi.chia.net/simple/ -f . --wheel-dir=.\build_scripts_ext9\win_build .
 
 Write-Output "   ---"
 Write-Output "Install chia-blockchain wheels into venv with pip"
 Write-Output "   ---"
 
 Write-Output "pip install miniupnpc"
-Set-Location -Path ".\build_scripts" -PassThru
+Set-Location -Path ".\build_scripts_ext9" -PassThru
 pip install --no-index --find-links=.\win_build\ miniupnpc
 # Write-Output "pip install setproctitle"
 # pip install setproctitle==1.2.2
@@ -72,7 +77,7 @@ pyinstaller --log-level INFO $SPEC_FILE
 Write-Output "   ---"
 Write-Output "Copy chia executables to chia-blockchain-gui\"
 Write-Output "   ---"
-Copy-Item "dist\daemon" -Destination "..\chia-blockchain-gui\" -Recurse
+Copy-Item "dist\daemon" -Destination "..\chia-blockchain-gui\" -Recurse -Force
 Set-Location -Path "..\chia-blockchain-gui" -PassThru
 
 git status
@@ -99,17 +104,17 @@ If ($LastExitCode -gt 0){
 Write-Output "   ---"
 Write-Output "Increase the stack for chia command for (chia plots create) chiapos limitations"
 # editbin.exe needs to be in the path
-editbin.exe /STACK:8000000 daemon\chia.exe
+# editbin.exe /STACK:8000000 daemon\chia.exe
 Write-Output "   ---"
 
 $packageVersion = "$env:CHIA_INSTALLER_VERSION"
-$packageName = "Chia-$packageVersion"
+$packageName = "NChain-Ext9-$packageVersion"
 
 Write-Output "packageName is $packageName"
 
 Write-Output "   ---"
 Write-Output "electron-packager"
-electron-packager . Chia --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\chia.ico --app-version=$packageVersion
+electron-packager . NChainExt9 --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\chia.ico --app-version=$packageVersion
 Write-Output "   ---"
 
 Write-Output "   ---"
