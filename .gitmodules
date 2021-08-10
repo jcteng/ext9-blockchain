@@ -1,6 +1,6 @@
 [submodule "chia-blockchain-gui"]
 	path = chia-blockchain-gui
-	url = https://github.com/nchia-net/chia-blockchain-gui.git
+	url = https://github.com/ext9/ext9-gui.git
 	branch = net9.dev
 [submodule "mozilla-ca"]
 	path = mozilla-ca
