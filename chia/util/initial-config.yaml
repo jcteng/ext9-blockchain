@@ -284,7 +284,7 @@ full_node:
   # How often to initiate outbound connections to other full nodes.
   peer_connect_interval: 30
   # Accept peers until this number of connections
-  target_peer_count: 140
+  target_peer_count: 240
   # Initiate outbound connections until this number is hit.
   target_outbound_peer_count: 7
   # IPv4/IPv6 network addresses and CIDR blocks allowed to connect even when target_peer_count has been hit.
