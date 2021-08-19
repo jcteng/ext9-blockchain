@@ -57,7 +57,7 @@ kwargs = dict(
         upnp=upnp_dependencies,
     ),
     packages=[
-        "build_scripts",
+        "build_scripts_ext9",
         "chia",
         "chia.cmds",
         "chia.clvm",
