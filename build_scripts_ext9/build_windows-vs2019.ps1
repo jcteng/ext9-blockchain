@@ -133,8 +133,9 @@ If ($env:HAS_SECRET) {
    Write-Output "   ---"
    Write-Output "Add timestamp and verify signature"
    Write-Output "   ---"
-   signtool.exe timestamp /v /t http://timestamp.comodoca.com/ .\release-builds\windows-installer\Ext9Setup-$packageVersion.exe
-   signtool.exe verify /v /pa .\release-builds\windows-installer\ChiaSetup-$packageVersion.exe
+   signtool.exe sign /a /f ext9.pfx /p $env:HAS_SECRET  .\release-builds\windows-installer\NChainExt9Setup-$packageVersion.exe
+   signtool.exe timestamp /v /t http://timestamp.comodoca.com/ .\release-builds\windows-installer\NChainExt9Setup-$packageVersion.exe
+   signtool.exe verify /v /pa .\release-builds\windows-installer\NChainExt9Setup--$packageVersion.exe
    }   Else    {
    Write-Output "Skipping timestamp and verify signatures - no authorization to install certificates"
 }
