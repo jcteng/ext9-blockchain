@@ -17,6 +17,7 @@ git clone https://gitee.com/ext9/ext9-blockchain.git -b net9.dev  --recurse-subm
 cd ext9-blockchain
 sh install.sh
 . ./activate
+chia start node
 ```
 
 ### ubuntu deb
