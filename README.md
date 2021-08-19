@@ -4,7 +4,7 @@ Thanks to the outstanding work accomplished by Chia, it is possible to run multi
 
 Ext9 is designed precisely for co-farming with chia to share the same plots serve for more consensus data.it also will be the best testing ground for Chialisp.
 
-## install 
+## installation 
 
 ### windows
 
