@@ -1,4 +1,5 @@
 import asyncio
+from asyncio.windows_events import NULL
 import dataclasses
 import logging
 import multiprocessing
@@ -89,6 +90,7 @@ class Blockchain(BlockchainInterface):
         coin_store: CoinStore,
         block_store: BlockStore,
         consensus_constants: ConsensusConstants,
+        worker_count = 61
     ):
         """
         Initializes a blockchain with the BlockRecords from disk, assuming they have all been
@@ -102,6 +104,8 @@ class Blockchain(BlockchainInterface):
         if cpu_count > 61:
             cpu_count = 61  # Windows Server 2016 has an issue https://bugs.python.org/issue26903
         num_workers = max(cpu_count - 2, 1)
+        
+        num_workers = min(num_workers,worker_count)
         self.pool = ProcessPoolExecutor(max_workers=num_workers)
         log.info(f"Started {num_workers} processes for block validation")
 
