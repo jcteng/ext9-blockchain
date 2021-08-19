@@ -13,7 +13,7 @@ execute installer .
 
 ### linux from source 
 ```bash 
-git clone https://github.com/ext9/ext9-blockchain.git -b net9.dev  --recurse-submodules
+git clone https://gitee.com/ext9/ext9-blockchain.git -b net9.dev  --recurse-submodules
 cd ext9-blockchain
 sh install.sh
 . ./activate
